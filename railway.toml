@@ -1,9 +1,8 @@
 [build]
 builder = "nixpacks"
-buildCommand = "go build -o app time_series_demo.go"
 
 [deploy]
-startCommand = "./app"
+startCommand = "go run main.go"
 healthcheckPath = "/health"
 healthcheckTimeout = 60
 restartPolicyType = "always"
