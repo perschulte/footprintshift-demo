@@ -1307,6 +1307,9 @@ func main() {
         async function loadTimeSeriesData() {
             try {
                 const response = await fetch('/api/v1/carbon-intensity/timeseries');
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
                 const data = await response.json();
                 timeSeriesData = data.timeseries; // 96 data points
                 
