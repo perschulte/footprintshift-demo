@@ -1683,7 +1683,9 @@ func main() {
 		log.Printf("📊 Demo: http://localhost:%s/demo", port)
 	}
 	
-	r.Run(":" + port)
+	if err := r.Run(":" + port); err != nil {
+		log.Fatal("Failed to start server:", err)
+	}
 }
 
 // Helper functions for metadata calculation
