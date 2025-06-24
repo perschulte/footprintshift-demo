@@ -378,6 +378,11 @@ func main() {
 		c.JSON(200, gin.H{"status": "test route works"})
 	})
 
+	// Debug route - simple string
+	r.GET("/debug", func(c *gin.Context) {
+		c.String(200, "DEBUG: This should work!")
+	})
+
 	// Interactive time series demo page
 	r.GET("/demo", func(c *gin.Context) {
 		html := `<!DOCTYPE html>
