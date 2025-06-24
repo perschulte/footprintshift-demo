@@ -272,10 +272,11 @@ func main() {
 	// Health check
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"status":    "healthy",
+			"status":    "FOOTPRINTSHIFT-DEMO-ACTIVE",
 			"service":   "footprintshift-api",
-			"version":   "0.3.1-debug",
+			"version":   "0.4.0-demo-isolated",
 			"routes":    []string{"/", "/health", "/test", "/demo"},
+			"build":     "2024-06-25-demo",
 			"features": []string{
 				"24h_time_series_simulation",
 				"germany_realistic_patterns",
