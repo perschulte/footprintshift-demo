@@ -274,7 +274,8 @@ func main() {
 		c.JSON(200, gin.H{
 			"status":    "healthy",
 			"service":   "footprintshift-api",
-			"version":   "0.3.0",
+			"version":   "0.3.1-debug",
+			"routes":    []string{"/", "/health", "/test", "/demo"},
 			"features": []string{
 				"24h_time_series_simulation",
 				"germany_realistic_patterns",
