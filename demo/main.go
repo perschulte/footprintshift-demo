@@ -424,38 +424,98 @@ func main() {
             gap: 40px;
         }
         
-        /* Typography hierarchy */
-        .title {
-            font-size: 28px;
+        /* Hero Section - Mission First */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0 40px;
+            background: linear-gradient(to bottom, #ffffff, #fafafa);
+        }
+        
+        .mission-statement {
+            margin-bottom: 40px;
+        }
+        
+        .mission-title {
+            font-size: 56px;
             font-weight: 200;
-            letter-spacing: 0.5px;
+            letter-spacing: -1px;
             color: #1a1a1a;
-            margin-bottom: 8px;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
         
-        .subtitle {
-            font-size: 14px;
-            font-weight: 400;
+        .shift-arrow {
+            color: #22c55e;
+            font-weight: 300;
+            animation: shiftPulse 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes shiftPulse {
+            0%, 100% { transform: translateX(0); opacity: 0.8; }
+            50% { transform: translateX(10px); opacity: 1; }
+        }
+        
+        .mission-subtitle {
+            font-size: 20px;
+            font-weight: 300;
             color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-        }
-        
-        /* Value proposition - elegant product messaging */
-        .value-proposition {
+            line-height: 1.4;
             max-width: 600px;
             margin: 0 auto;
-            text-align: center;
-            padding: 30px 0;
+        }
+        
+        .brand-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .brand-name {
+            font-size: 18px;
+            font-weight: 400;
+            color: #333;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        
+        .brand-tagline {
+            font-size: 12px;
+            font-weight: 300;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 8px 0 0 0;
+        }
+        
+        /* Value proposition - mission-focused messaging */
+        .value-proposition {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: left;
+            padding: 40px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .value-text {
             font-size: 16px;
             font-weight: 300;
-            line-height: 1.6;
+            line-height: 1.8;
             color: #4a4a4a;
-            margin-bottom: 25px;
+            margin: 0;
+        }
+        
+        .value-text strong {
+            color: #1a1a1a;
+            font-weight: 500;
+            display: inline-block;
+            min-width: 100px;
         }
         
         .demo-badge {
@@ -480,6 +540,33 @@ func main() {
             font-size: 12px;
             color: #999;
             font-weight: 300;
+        }
+        
+        /* Demo section wrapper */
+        .demo-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: #f8f8f6;
+            border-radius: 8px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-title {
+            font-size: 24px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin: 0 0 10px 0;
+        }
+        
+        .demo-description {
+            font-size: 16px;
+            font-weight: 300;
+            color: #666;
+            margin: 0;
         }
         
         /* Control section - minimal, functional */
@@ -511,12 +598,12 @@ func main() {
             letter-spacing: 1px;
         }
         
-        /* Timeline Chart - Bar visualization as primary interface */
+        /* Timeline Chart - Demo visualization */
         .timeline-container {
             position: relative;
             width: 100%;
-            height: 80px;
-            margin: 20px 0;
+            height: 60px;
+            margin: 15px 0;
             background: white;
             border: 1px solid #e8e8e8;
             border-radius: 1px;
@@ -529,7 +616,7 @@ func main() {
             bottom: 0;
             left: 0;
             right: 0;
-            height: 80px;
+            height: 60px;
             background: linear-gradient(to bottom, #fafafa, #f5f5f5);
         }
         
@@ -624,7 +711,7 @@ func main() {
             right: 0;
             bottom: 0;
             width: 100%;
-            height: 80px;
+            height: 60px;
             pointer-events: none;
             z-index: 5;
         }
@@ -1103,25 +1190,40 @@ func main() {
 </head>
 <body>
     <div class="page">
-        <header>
-            <h1 class="title">FootprintShift</h1>
-            <p class="subtitle">Real-time environmental optimization for digital products</p>
+        <header class="hero-section">
+            <div class="mission-statement">
+                <h1 class="mission-title">
+                    Shift IT to Green
+                    <span class="shift-arrow">→</span>
+                </h1>
+                <p class="mission-subtitle">Transform your digital infrastructure to run on clean energy, automatically.</p>
+            </div>
             
             <div class="value-proposition">
-                <p class="value-text">Automatically optimize your application's environmental footprint based on real-time electricity grid data. Reduce CO₂ emissions and resource consumption without compromising user experience.</p>
-                
-                <div class="demo-badge">
-                    <span class="demo-label">LIVE DEMO</span>
-                    <span class="demo-description">Germany • 15-minute precision</span>
-                </div>
+                <p class="value-text">
+                    <strong>The Problem:</strong> Data centers consume 1% of global electricity. Most of it from fossil fuels.<br>
+                    <strong>The Solution:</strong> Shift computing workloads to times when renewable energy is abundant.<br>
+                    <strong>The Impact:</strong> Reduce CO₂ emissions by up to 40% without changing your code.
+                </p>
+            </div>
+            
+            <div class="brand-section">
+                <p class="brand-name">FootprintShift</p>
+                <p class="brand-tagline">Intelligent Carbon-Aware Computing</p>
             </div>
         </header>
 
-        <section class="control-section">
-            <div class="time-display">
-                <div class="current-time" id="currentTime">12:00</div>
-                <div class="time-label" id="timeLabel">MITTAG</div>
+        <section class="demo-section">
+            <div class="demo-header">
+                <h2 class="demo-title">See It In Action</h2>
+                <p class="demo-description">Real-time carbon intensity for Germany's power grid. Green bars show optimal computing times.</p>
             </div>
+            
+            <div class="control-section">
+                <div class="time-display">
+                    <div class="current-time" id="currentTime">12:00</div>
+                    <div class="time-label" id="timeLabel">MITTAG</div>
+                </div>
             
             <div class="timeline-container">
                 <div class="timeline-progress" id="timelineProgress"></div>
@@ -1145,6 +1247,7 @@ func main() {
                     <span class="play-icon">▶</span>
                     <span class="pause-icon" style="display: none;">⏸</span>
                 </button>
+            </div>
             </div>
         </section>
 
@@ -1256,8 +1359,8 @@ func main() {
 
         <section class="cta-section">
             <div class="cta-content">
-                <h2 class="cta-title">Integrate Environmental-Aware Computing</h2>
-                <p class="cta-description">Join forward-thinking companies building sustainable digital products. Get early access to our environmental footprint optimization API.</p>
+                <h2 class="cta-title">Join the Green Shift</h2>
+                <p class="cta-description">Be part of the movement. Help shift global IT infrastructure to renewable energy. Start reducing your carbon footprint today.</p>
                 
                 <div class="benefits-grid">
                     <div class="benefit">
@@ -1299,7 +1402,7 @@ func main() {
                         </select>
                     </div>
                     <button type="submit" class="cta-button" id="ctaButton">
-                        Request Early Access
+                        Join the Green Shift →
                     </button>
                 </form>
                 
@@ -1350,7 +1453,7 @@ func main() {
             const minIntensity = Math.min(...timeSeriesData.map(d => d.carbon_intensity));
             const chartWidth = 100;
             const barWidth = chartWidth / 96;
-            const maxBarHeight = 70;
+            const maxBarHeight = 50;
             
             timeSeriesData.forEach((data, index) => {
                 const bar = document.createElement('div');
