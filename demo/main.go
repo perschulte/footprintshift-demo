@@ -1755,23 +1755,15 @@ func main() {
         }
         
         function findNextGreenWindow(currentIndex) {
-            // Look for the next green period (within next 12 hours / 48 indices)
-            const searchLimit = Math.min(currentIndex + 48, 96);
-            
-            for (let i = currentIndex + 1; i < searchLimit; i++) {
+            // Only look for green periods in the future (rest of current day)
+            for (let i = currentIndex + 1; i < 96; i++) {
                 if (timeSeriesData[i].mode === 'green') {
                     return i;
                 }
             }
             
-            // If no green window found ahead, look from beginning of day
-            for (let i = 0; i < currentIndex; i++) {
-                if (timeSeriesData[i].mode === 'green') {
-                    return i;
-                }
-            }
-            
-            return -1; // No green window found
+            // No green window found in the future
+            return -1;
         }
         
         function updateShiftArrow(fromIndex, toIndex) {
