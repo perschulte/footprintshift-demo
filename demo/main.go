@@ -774,51 +774,56 @@ func main() {
         .timeline-bar.yellow { background: #9ca3af; } /* Medium gray */
         .timeline-bar.red { background: #6b7280; } /* Dark gray */
         
-        /* Dieter Rams Controls - Minimal Precision */
+        /* Dieter Rams Controls - Minimal Play/Pause Toggle */
         .controls {
             display: flex;
             justify-content: center;
-            gap: 2px;
             margin: 20px 0;
         }
         
-        .control-btn {
+        .play-pause-btn {
             background: #f5f5f5;
             color: #666;
             border: 1px solid #e0e0e0;
-            padding: 6px 12px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
             cursor: pointer;
-            border-radius: 0;
-            transition: all 0.15s ease;
-            font-weight: 500;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: inherit;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        .control-btn:hover {
+        .play-pause-btn:hover {
             background: white;
             color: #333;
             border-color: #ccc;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
-        .control-btn:active,
-        .control-btn.active {
+        .play-pause-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .play-pause-btn.playing {
             background: #22c55e;
             color: white;
             border-color: #22c55e;
         }
         
-        .control-btn:first-child {
-            border-top-left-radius: 1px;
-            border-bottom-left-radius: 1px;
+        .play-icon, .pause-icon {
+            transition: opacity 0.2s ease;
+            position: absolute;
         }
         
-        .control-btn:last-child {
-            border-top-right-radius: 1px;
-            border-bottom-right-radius: 1px;
+        .play-icon {
+            margin-left: 3px; /* Slight visual centering for play icon */
         }
         
         /* Optimization details - systematic layout */
@@ -1136,9 +1141,10 @@ func main() {
             </div>
             
             <div class="controls">
-                <button class="control-btn" onclick="playTimeSeries()">Start</button>
-                <button class="control-btn" onclick="pauseTimeSeries()">Pause</button>
-                <button class="control-btn" onclick="resetTimeSeries()">Reset</button>
+                <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlayPause()">
+                    <span class="play-icon">▶</span>
+                    <span class="pause-icon" style="display: none;">⏸</span>
+                </button>
             </div>
         </section>
 
@@ -1539,6 +1545,15 @@ func main() {
         }
         
         
+        function togglePlayPause() {
+            if (isPlaying) {
+                pauseTimeSeries();
+            } else {
+                playTimeSeries();
+            }
+            updatePlayPauseButton();
+        }
+        
         function playTimeSeries() {
             if (isPlaying) return;
             
@@ -1559,7 +1574,10 @@ func main() {
                     pixelPosition = 0; // Loop back to start
                     currentTimeIndex = 0;
                     lastDataUpdateIndex = 0;
-                    setTimeout(() => pauseTimeSeries(), 300);
+                    setTimeout(() => {
+                        pauseTimeSeries();
+                        updatePlayPauseButton();
+                    }, 300);
                     return;
                 }
                 
@@ -1589,6 +1607,22 @@ func main() {
             if (playInterval) {
                 clearInterval(playInterval);
                 playInterval = null;
+            }
+        }
+        
+        function updatePlayPauseButton() {
+            const button = document.getElementById('playPauseBtn');
+            const playIcon = button.querySelector('.play-icon');
+            const pauseIcon = button.querySelector('.pause-icon');
+            
+            if (isPlaying) {
+                button.classList.add('playing');
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            } else {
+                button.classList.remove('playing');
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
             }
         }
         
@@ -1670,6 +1704,7 @@ func main() {
 
         // Initialize
         loadTimeSeriesData();
+        updatePlayPauseButton(); // Set initial button state
     </script>
 </body>
 </html>`
