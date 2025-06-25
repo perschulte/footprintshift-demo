@@ -1020,12 +1020,96 @@ func main() {
             margin-left: 3px; /* Slight visual centering for play icon */
         }
         
-        /* Optimization details - systematic layout */
-        .optimization-section {
+        /* Developer section - Rams-inspired technical design */
+        .developer-section {
+            margin: 40px 0;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+        }
+        
+        .section-header {
+            padding: 30px 30px 0 30px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 8px 0;
+        }
+        
+        .section-subtitle {
+            font-size: 13px;
+            color: #666;
+            margin: 0 0 20px 0;
+            font-weight: 400;
+        }
+        
+        .dev-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 0 30px 20px 30px;
+        }
+        
+        .optimization-summary, .api-response {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+        }
+        
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 12px;
+        }
+        
+        .metric-row:last-of-type {
+            border-bottom: none;
+        }
+        
+        .savings-total {
+            background: #f8f9fa;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            color: #333;
+            border-radius: 1px;
+        }
+        
+        .json-output, .code-snippet {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+            overflow-x: auto;
+            border-radius: 0;
+            margin: 0;
+        }
+        
+        .code-example {
+            grid-column: 1 / -1;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            margin: 10px 30px 30px 30px;
+        }
+        
+        /* Legacy optimization section - removed */
+        .optimization-section {
+            display: none;
         }
         
         .optimization-card {
@@ -1104,7 +1188,7 @@ func main() {
             font-weight: 500;
         }
         
-        /* CTA Section - Rams-inspired conversion design */
+        /* CTA Section - Developer-focused design */
         .cta-section {
             background: #f8f8f6;
             border-top: 1px solid #e0e0e0;
@@ -1113,7 +1197,7 @@ func main() {
         }
         
         .cta-content {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             text-align: center;
         }
@@ -1124,6 +1208,48 @@ func main() {
             color: #1a1a1a;
             margin-bottom: 15px;
             letter-spacing: 0.5px;
+        }
+        
+        .api-endpoints {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .endpoint {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            padding: 15px 20px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .endpoint-method {
+            background: #22c55e;
+            color: white;
+            padding: 4px 8px;
+            font-size: 10px;
+            font-weight: 500;
+            border-radius: 2px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+        }
+        
+        .endpoint-path {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .endpoint-desc {
+            font-size: 11px;
+            color: #666;
+            text-align: right;
         }
         
         .cta-description {
@@ -1398,93 +1524,101 @@ func main() {
             </div>
         </section>
 
-        <section class="optimization-section">
-            <div class="optimization-card">
-                <div class="card-header">Video Optimization</div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="metric-label">Quality</span>
-                        <span class="metric-value" id="videoQuality">4K</span>
+        <section class="developer-section">
+            <div class="section-header">
+                <h3 class="section-title">API INTEGRATION</h3>
+                <p class="section-subtitle">Real-time carbon optimization for developers</p>
+            </div>
+            
+            <div class="dev-grid">
+                <div class="optimization-summary">
+                    <div class="card-header">CURRENT OPTIMIZATION</div>
+                    <div class="card-content">
+                        <div class="metric-row">
+                            <span class="metric-label">Mode</span>
+                            <span class="metric-value" id="systemMode">Full</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Video</span>
+                            <span class="metric-value" id="videoQuality">4K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">AI Processing</span>
+                            <span class="metric-value" id="aiStatus">Active</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">GPU Features</span>
+                            <span class="metric-value" id="webglStatus">Enabled</span>
+                        </div>
+                        <div class="savings-total" id="totalSavings">
+                            Total: 0g CO₂ saved
+                        </div>
                     </div>
-                    <div class="metric">
-                        <span class="metric-label">Bitrate</span>
-                        <span class="metric-value" id="videoBitrate">25000 kbps</span>
-                    </div>
-                    <div class="savings-indicator" id="videoSavings">
-                        0g CO₂/h saved
+                </div>
+
+                <div class="api-response">
+                    <div class="card-header">LIVE API RESPONSE</div>
+                    <div class="card-content">
+                        <pre class="json-output" id="liveJsonOutput">{
+  "carbon_intensity": 295,
+  "mode": "yellow",
+  "renewable_percentage": 45,
+  "optimization": {
+    "video_quality": "4K",
+    "ai_deferred": false,
+    "gpu_features_disabled": false,
+    "eco_discount": 0
+  }
+}</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="optimization-card">
-                <div class="card-header">AI Processing</div>
+            <div class="code-example">
+                <div class="card-header">INTEGRATION EXAMPLE</div>
                 <div class="card-content">
-                    <div class="metric">
-                        <span class="metric-label">Status</span>
-                        <span class="metric-value" id="aiStatus">Active</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Deferred</span>
-                        <span class="metric-value" id="aiDeferred">No</span>
-                    </div>
-                    <div class="savings-indicator" id="aiSavings">
-                        0g CO₂/session saved
-                    </div>
-                </div>
-            </div>
+                    <pre class="code-snippet">// Get carbon intensity and optimization recommendations
+const response = await fetch('/api/v1/carbon-intensity/current');
+const data = await response.json();
 
-            <div class="optimization-card">
-                <div class="card-header">GPU Features</div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="metric-label">WebGL</span>
-                        <span class="metric-value" id="webglStatus">Enabled</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">3D Models</span>
-                        <span class="metric-value" id="modelsStatus">Enabled</span>
-                    </div>
-                    <div class="savings-indicator" id="gpuSavings">
-                        0g CO₂/h saved
-                    </div>
-                </div>
-            </div>
+if (data.mode === 'green') {
+  // Optimal time - full features
+  enableHighQualityVideo();
+  enableAIProcessing();
+} else if (data.mode === 'red') {
+  // High carbon - optimize aggressively  
+  reduceVideoQuality(data.optimization.video_quality);
+  deferAIToGreenWindow(data.next_green_window);
+}
 
-            <div class="optimization-card">
-                <div class="card-header">System Status</div>
-                <div class="card-content">
-                    <div class="metric">
-                        <span class="metric-label">Mode</span>
-                        <span class="metric-value" id="systemMode">Full</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Eco Discount</span>
-                        <span class="metric-value" id="ecoDiscount">0%</span>
-                    </div>
-                    <div class="savings-indicator" id="totalSavings">
-                        Total: 0g CO₂ saved
-                    </div>
+// Apply eco discount during green periods
+if (data.optimization.eco_discount > 0) {
+  showEcoDiscount(data.optimization.eco_discount);
+}</pre>
                 </div>
             </div>
         </section>
 
         <section class="cta-section">
             <div class="cta-content">
-                <h2 class="cta-title">Join the Green Shift</h2>
-                <p class="cta-description">Be part of the movement. Help shift global IT infrastructure to renewable energy. Start reducing your carbon footprint today.</p>
+                <h2 class="cta-title">FootprintShift API</h2>
+                <p class="cta-description">Real-time carbon optimization for your applications. Reduce IT carbon footprint with intelligent feature management based on grid carbon intensity.</p>
                 
-                <div class="benefits-grid">
-                    <div class="benefit">
-                        <div class="benefit-metric">24g CO₂/h</div>
-                        <div class="benefit-label">Video optimization</div>
+                <div class="api-endpoints">
+                    <div class="endpoint">
+                        <div class="endpoint-method">GET</div>
+                        <div class="endpoint-path">/api/v1/carbon-intensity/current</div>
+                        <div class="endpoint-desc">Current carbon intensity & optimization recommendations</div>
                     </div>
-                    <div class="benefit">
-                        <div class="benefit-metric">3g CO₂/session</div>
-                        <div class="benefit-label">AI deferral</div>
+                    <div class="endpoint">
+                        <div class="endpoint-method">GET</div>
+                        <div class="endpoint-path">/api/v1/optimization/{hour}</div>
+                        <div class="endpoint-desc">Hourly optimization settings for feature management</div>
                     </div>
-                    <div class="benefit">
-                        <div class="benefit-metric">15g CO₂/h</div>
-                        <div class="benefit-label">GPU optimization</div>
+                    <div class="endpoint">
+                        <div class="endpoint-method">GET</div>
+                        <div class="endpoint-path">/api/v1/carbon-intensity/timeseries</div>
+                        <div class="endpoint-desc">24h forecast data for scheduling workloads</div>
                     </div>
                 </div>
                 
@@ -1703,6 +1837,9 @@ func main() {
                 const opt = optData.optimization;
                 updateOptimizationCards(opt);
                 
+                // Update live JSON for developers
+                updateLiveJson(carbonData, opt);
+                
                 // Highlight current time index in timeline - smooth visual feedback
                 document.querySelectorAll('.timeline-bar').forEach((bar, index) => {
                     bar.classList.toggle('active', index === timeIndex);
@@ -1832,33 +1969,14 @@ func main() {
         
         
         function updateOptimizationCards(opt) {
-            // Video optimization - precise metrics
-            document.getElementById('videoQuality').textContent = opt.video_quality || '4K';
-            document.getElementById('videoBitrate').textContent = 
-                (opt.max_video_bitrate_kbps || 25000).toLocaleString() + ' kbps';
-            document.getElementById('videoSavings').textContent = 
-                Math.round(opt.video_co2_savings_per_hour_g || 0) + 'g CO₂/h saved';
-            
-            // AI optimization - status focused
-            document.getElementById('aiStatus').textContent = 
-                opt.ai_deferred_to_green_window ? 'Deferred' : 'Active';
-            document.getElementById('aiDeferred').textContent = 
-                opt.ai_deferred_to_green_window ? 'Yes' : 'No';
-            document.getElementById('aiSavings').textContent = 
-                Math.round(opt.ai_co2_savings_per_session_g || 0) + 'g CO₂/session saved';
-            
-            // GPU optimization - binary states
-            document.getElementById('webglStatus').textContent = 
-                opt.gpu_features_disabled ? 'Disabled' : 'Enabled';
-            document.getElementById('modelsStatus').textContent = 
-                (opt.disable_features && opt.disable_features.includes('3d_models')) ? 'Disabled' : 'Enabled';
-            document.getElementById('gpuSavings').textContent = 
-                Math.round(opt.gpu_co2_savings_per_hour_g || 0) + 'g CO₂/h saved';
-            
-            // System status - minimal information
+            // Update condensed summary
             document.getElementById('systemMode').textContent = 
                 opt.mode.charAt(0).toUpperCase() + opt.mode.slice(1);
-            document.getElementById('ecoDiscount').textContent = (opt.eco_discount || 0) + '%';
+            document.getElementById('videoQuality').textContent = opt.video_quality || '4K';
+            document.getElementById('aiStatus').textContent = 
+                opt.ai_deferred_to_green_window ? 'Deferred' : 'Active';
+            document.getElementById('webglStatus').textContent = 
+                opt.gpu_features_disabled ? 'Disabled' : 'Enabled';
             
             // Total savings calculation
             const totalSavings = (opt.video_co2_savings_per_hour_g || 0) + 
@@ -1866,6 +1984,29 @@ func main() {
                                (opt.gpu_co2_savings_per_hour_g || 0);
             document.getElementById('totalSavings').textContent = 
                 'Total: ' + Math.round(totalSavings) + 'g CO₂ saved';
+        }
+        
+        function updateLiveJson(carbonData, opt) {
+            // Create live JSON response for developers
+            const liveData = {
+                carbon_intensity: Math.round(carbonData.carbon_intensity),
+                mode: carbonData.mode,
+                renewable_percentage: Math.round(carbonData.renewable_percentage),
+                timestamp: new Date().toISOString(),
+                optimization: {
+                    video_quality: opt.video_quality || '4K',
+                    ai_deferred: opt.ai_deferred_to_green_window || false,
+                    gpu_features_disabled: opt.gpu_features_disabled || false,
+                    eco_discount: opt.eco_discount || 0,
+                    co2_savings_per_hour: Math.round((opt.video_co2_savings_per_hour_g || 0) + 
+                                                   (opt.gpu_co2_savings_per_hour_g || 0))
+                },
+                next_green_window: carbonData.next_green_window
+            };
+            
+            // Update JSON display with formatted output
+            document.getElementById('liveJsonOutput').textContent = 
+                JSON.stringify(liveData, null, 2);
         }
         
         
@@ -1927,6 +2068,14 @@ func main() {
                     const carbonData = timeSeriesData[targetTimeIndex];
                     if (carbonData) {
                         updateShiftDisplay(carbonData, targetTimeIndex);
+                        // Also update optimization cards and JSON for continuous updates
+                        fetch('/api/v1/optimization/' + carbonData.hour)
+                            .then(response => response.json())
+                            .then(optData => {
+                                updateOptimizationCards(optData.optimization);
+                                updateLiveJson(carbonData, optData.optimization);
+                            })
+                            .catch(error => console.error('Error updating optimization:', error));
                     }
                 }
                 
