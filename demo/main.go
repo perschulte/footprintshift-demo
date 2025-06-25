@@ -447,16 +447,58 @@ func main() {
             gap: 20px;
         }
         
-        .shift-arrow {
-            color: #22c55e;
-            font-weight: 300;
-            animation: shiftPulse 2s ease-in-out infinite;
+        .shift-operator {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 40px;
+            margin-left: 20px;
             display: inline-block;
+            position: relative;
+            color: #22c55e;
         }
         
-        @keyframes shiftPulse {
-            0%, 100% { transform: translateX(0); opacity: 0.8; }
-            50% { transform: translateX(10px); opacity: 1; }
+        .bit-before, .bit-after {
+            font-size: 24px;
+            font-weight: 400;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .bit-before {
+            color: #999;
+            margin-right: 8px;
+            opacity: 0.6;
+        }
+        
+        .bit-after {
+            color: #22c55e;
+            margin-left: 8px;
+            font-weight: 600;
+            animation: bitGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes bitGlow {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 4px rgba(34, 197, 94, 0.3); }
+            50% { opacity: 1; text-shadow: 0 0 8px rgba(34, 197, 94, 0.6); }
+        }
+        
+        @keyframes bitShift {
+            0%, 100% { 
+                transform: translateX(0); 
+                opacity: 0.8; 
+            }
+            25% { 
+                transform: translateX(3px); 
+                opacity: 1; 
+            }
+            50% { 
+                transform: translateX(6px); 
+                opacity: 0.9; 
+            }
+            75% { 
+                transform: translateX(3px); 
+                opacity: 1; 
+            }
         }
         
         .mission-subtitle {
@@ -1194,7 +1236,9 @@ func main() {
             <div class="mission-statement">
                 <h1 class="mission-title">
                     Shift IT to Green
-                    <span class="shift-arrow">→</span>
+                    <span class="shift-operator">
+                        <span class="bit-before">0</span>&gt;&gt;<span class="bit-after">1</span>
+                    </span>
                 </h1>
                 <p class="mission-subtitle">Transform your digital infrastructure to run on clean energy, automatically.</p>
             </div>
