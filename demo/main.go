@@ -948,6 +948,26 @@ func main() {
             z-index: 10;
         }
         
+        /* Next green target - stronger highlighting for immediate target */
+        .timeline-bar.next-green-target {
+            background: #22c55e !important;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+            transform: scaleY(1.4);
+            z-index: 15;
+            animation: targetPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes targetPulse {
+            0%, 100% { 
+                box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+                transform: scaleY(1.4);
+            }
+            50% { 
+                box-shadow: 0 0 16px rgba(34, 197, 94, 1);
+                transform: scaleY(1.6);
+            }
+        }
+        
         /* Dieter Rams Controls - Minimal Play/Pause Toggle */
         .controls {
             display: flex;
@@ -1795,7 +1815,13 @@ func main() {
             // Add highlight class to green window bars
             document.querySelectorAll('.timeline-bar').forEach((bar, index) => {
                 if (index >= windowStart && index <= windowEnd && timeSeriesData[index].mode === 'green') {
-                    bar.classList.add('shift-target');
+                    if (index === targetIndex) {
+                        // Highlight the specific next green target with stronger emphasis
+                        bar.classList.add('next-green-target');
+                    } else {
+                        // Highlight the rest of the green window with standard emphasis
+                        bar.classList.add('shift-target');
+                    }
                 }
             });
         }
@@ -1803,6 +1829,7 @@ func main() {
         function clearGreenHighlights() {
             document.querySelectorAll('.timeline-bar').forEach(bar => {
                 bar.classList.remove('shift-target');
+                bar.classList.remove('next-green-target');
             });
         }
         
@@ -1868,7 +1895,7 @@ func main() {
             
             playInterval = setInterval(() => {
                 // Move indicator pixel by pixel
-                pixelPosition += 2; // 2 pixels per frame for smooth motion
+                pixelPosition += 1; // 1 pixel per frame for slower, smoother motion
                 
                 if (pixelPosition >= containerWidth) {
                     pixelPosition = 0; // Loop back to start
@@ -1897,9 +1924,16 @@ func main() {
                     currentTimeIndex = targetTimeIndex;
                     updateForTimeIndex(currentTimeIndex);
                     lastDataUpdateIndex = targetTimeIndex;
+                } else if (targetTimeIndex < 96) {
+                    // Update shift display continuously even between time periods
+                    currentTimeIndex = targetTimeIndex;
+                    const carbonData = timeSeriesData[targetTimeIndex];
+                    if (carbonData) {
+                        updateShiftDisplay(carbonData, targetTimeIndex);
+                    }
                 }
                 
-            }, 50); // 50ms intervals for smooth pixel movement (20fps)
+            }, 75); // 75ms intervals for slower, more readable animation (~13fps)
         }
         
         function pauseTimeSeries() {
