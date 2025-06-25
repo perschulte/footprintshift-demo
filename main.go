@@ -379,11 +379,6 @@ func main() {
 
 	// Interactive time series demo page
 	r.GET("/demo", func(c *gin.Context) {
-		// Test with minimal HTML first
-		testHTML := `<!DOCTYPE html><html><body><h1>FootprintShift Demo</h1><p>If you see this, the route works!</p></body></html>`
-		c.Data(200, "text/html; charset=utf-8", []byte(testHTML))
-		return
-		
 		html := `<!DOCTYPE html>
 <html>
 <head>

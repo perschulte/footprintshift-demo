@@ -591,24 +591,51 @@ func main() {
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
-        .time-display {
+        .shift-display {
             text-align: center;
             margin-bottom: 30px;
         }
         
-        .current-time {
-            font-size: 48px;
+        .current-intensity {
+            font-size: 42px;
             font-weight: 100;
             color: #1a1a1a;
             letter-spacing: -1px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
         }
         
-        .time-label {
-            font-size: 12px;
-            color: #999;
+        .unit {
+            font-size: 18px;
+            color: #666;
+            font-weight: 300;
+            margin-left: 8px;
+        }
+        
+        .shift-recommendation {
+            font-size: 16px;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .shift-recommendation.compute-now {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .shift-recommendation.shift-recommended {
+            background: #fbbf24;
+            color: #92400e;
+        }
+        
+        .shift-recommendation.shift-required {
+            background: #ef4444;
+            color: white;
         }
         
         /* Timeline Chart - Demo visualization */
@@ -675,11 +702,11 @@ func main() {
             top: 0;
             bottom: 0;
             width: 2px;
-            background: #22c55e; /* Darker green for visibility */
+            background: #22c55e;
             z-index: 20;
             pointer-events: none;
             box-shadow: 0 0 8px rgba(5, 150, 105, 0.4);
-            transition: left 0.1s linear; /* Smooth pixel movement */
+            transition: left 0.1s linear;
         }
         
         .current-time-indicator::before {
@@ -692,6 +719,45 @@ func main() {
             background: #22c55e;
             border-radius: 50%;
             box-shadow: 0 0 4px rgba(5, 150, 105, 0.6);
+        }
+        
+        /* Shift Arrow Visualization */
+        .shift-arrow {
+            position: absolute;
+            top: -20px;
+            height: 20px;
+            z-index: 15;
+            pointer-events: none;
+        }
+        
+        .arrow-line {
+            position: absolute;
+            top: 10px;
+            height: 2px;
+            background: linear-gradient(to right, #fbbf24, #22c55e);
+            border-radius: 1px;
+            opacity: 0.8;
+            animation: shiftPulse 2s ease-in-out infinite;
+        }
+        
+        .arrow-head {
+            position: absolute;
+            top: 5px;
+            right: -5px;
+            font-size: 14px;
+            color: #22c55e;
+            font-weight: bold;
+            animation: arrowBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes shiftPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(3px); }
         }
         
         /* Timeline interaction overlay */
@@ -873,6 +939,14 @@ func main() {
         .timeline-bar.green { background: #22c55e; } /* Fresh leaf green */
         .timeline-bar.yellow { background: #9ca3af; } /* Medium gray */
         .timeline-bar.red { background: #6b7280; } /* Dark gray */
+        
+        /* Shift target highlighting */
+        .timeline-bar.shift-target {
+            background: #22c55e !important;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+            transform: scaleY(1.2);
+            z-index: 10;
+        }
         
         /* Dieter Rams Controls - Minimal Play/Pause Toggle */
         .controls {
@@ -1233,15 +1307,19 @@ func main() {
             </div>
             
             <div class="control-section">
-                <div class="time-display">
-                    <div class="current-time" id="currentTime">12:00</div>
-                    <div class="time-label" id="timeLabel">MITTAG</div>
+                <div class="shift-display">
+                    <div class="current-intensity" id="currentIntensity">295<span class="unit">g CO₂/kWh</span></div>
+                    <div class="shift-recommendation" id="shiftRecommendation">SHIFT TO 22:00 → Save 40%</div>
                 </div>
             
             <div class="timeline-container">
                 <div class="timeline-progress" id="timelineProgress"></div>
                 <div class="timeline-chart" id="timelineChart"></div>
                 <div class="current-time-indicator" id="currentTimeIndicator"></div>
+                <div class="shift-arrow" id="shiftArrow" style="display: none;">
+                    <div class="arrow-line"></div>
+                    <div class="arrow-head">→</div>
+                </div>
                 <div class="timeline-legend">CO₂ Intensity</div>
                 <div class="timeline-tooltip" id="timelineTooltip"></div>
                 <input type="range" class="time-slider" id="timeSlider" min="0" max="95" value="48" step="1">
@@ -1617,9 +1695,115 @@ func main() {
                 // Update slider position
                 document.getElementById('timeSlider').value = timeIndex;
                 
+                // Update shift display
+                updateShiftDisplay(carbonData, timeIndex);
+                
             } catch (error) {
                 console.error('Error updating for hour:', hour, error);
             }
+        }
+        
+        function updateShiftDisplay(carbonData, currentIndex) {
+            // Update current intensity display
+            document.getElementById('currentIntensity').innerHTML = 
+                Math.round(carbonData.carbon_intensity) + '<span class="unit">g CO₂/kWh</span>';
+            
+            // Calculate shift recommendation
+            const nextGreenIndex = findNextGreenWindow(currentIndex);
+            const shiftRecommendation = document.getElementById('shiftRecommendation');
+            
+            if (carbonData.mode === 'green') {
+                shiftRecommendation.textContent = 'OPTIMAL TIME → Stay here';
+                shiftRecommendation.className = 'shift-recommendation green';
+            } else if (nextGreenIndex !== -1) {
+                const targetHour = timeSeriesData[nextGreenIndex].hour;
+                const currentIntensity = carbonData.carbon_intensity;
+                const targetIntensity = timeSeriesData[nextGreenIndex].carbon_intensity;
+                const savingsPercent = Math.round(((currentIntensity - targetIntensity) / currentIntensity) * 100);
+                
+                const timeStr = (targetHour < 10 ? '0' : '') + targetHour + ':00';
+                shiftRecommendation.textContent = 'SHIFT TO ' + timeStr + ' → Save ' + savingsPercent + '%';
+                shiftRecommendation.className = 'shift-recommendation ' + carbonData.mode;
+                
+                // Update shift arrow position
+                updateShiftArrow(currentIndex, nextGreenIndex);
+            } else {
+                shiftRecommendation.textContent = 'NO GREEN WINDOW → Stay optimized';
+                shiftRecommendation.className = 'shift-recommendation red';
+                hideShiftArrow();
+            }
+        }
+        
+        function findNextGreenWindow(currentIndex) {
+            // Look for the next green period (within next 12 hours / 48 indices)
+            const searchLimit = Math.min(currentIndex + 48, 96);
+            
+            for (let i = currentIndex + 1; i < searchLimit; i++) {
+                if (timeSeriesData[i].mode === 'green') {
+                    return i;
+                }
+            }
+            
+            // If no green window found ahead, look from beginning of day
+            for (let i = 0; i < currentIndex; i++) {
+                if (timeSeriesData[i].mode === 'green') {
+                    return i;
+                }
+            }
+            
+            return -1; // No green window found
+        }
+        
+        function updateShiftArrow(fromIndex, toIndex) {
+            const arrow = document.getElementById('shiftArrow');
+            const chart = document.getElementById('timelineChart');
+            const chartWidth = chart.offsetWidth;
+            
+            const fromPercent = (fromIndex / 95) * 100;
+            const toPercent = (toIndex / 95) * 100;
+            
+            // Position arrow from current time to target
+            arrow.style.left = fromPercent + '%';
+            arrow.style.width = Math.abs(toPercent - fromPercent) + '%';
+            arrow.style.display = 'block';
+            
+            // Add direction class
+            arrow.className = 'shift-arrow ' + (toIndex > fromIndex ? 'forward' : 'backward');
+            
+            // Highlight target green periods
+            highlightGreenPeriods(toIndex);
+        }
+        
+        function hideShiftArrow() {
+            document.getElementById('shiftArrow').style.display = 'none';
+            clearGreenHighlights();
+        }
+        
+        function highlightGreenPeriods(targetIndex) {
+            // Clear previous highlights
+            clearGreenHighlights();
+            
+            // Find and highlight the green window around target
+            const windowStart = targetIndex;
+            let windowEnd = targetIndex;
+            
+            // Extend window to include adjacent green periods
+            while (windowEnd < 95 && timeSeriesData[windowEnd + 1]?.mode === 'green') {
+                windowEnd++;
+            }
+            
+            // Add highlight class to green window bars
+            document.querySelectorAll('.timeline-bar').forEach((bar, index) => {
+                if (index >= windowStart && index <= windowEnd && timeSeriesData[index].mode === 'green') {
+                    bar.classList.add('shift-target');
+                }
+            });
+        }
+        
+        function clearGreenHighlights() {
+            document.querySelectorAll('.timeline-bar').forEach(bar => {
+                bar.classList.remove('shift-target');
+            });
         }
         
         
