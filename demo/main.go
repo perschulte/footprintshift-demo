@@ -1733,7 +1733,7 @@ func main() {
             const shiftRecommendation = document.getElementById('shiftRecommendation');
             
             if (carbonData.mode === 'green') {
-                shiftRecommendation.textContent = 'OPTIMAL TIME → Stay here';
+                shiftRecommendation.textContent = 'OPTIMAL TIME → No shift needed';
                 shiftRecommendation.className = 'shift-recommendation green';
             } else if (nextGreenIndex !== -1) {
                 const targetHour = timeSeriesData[nextGreenIndex].hour;
@@ -1803,23 +1803,28 @@ func main() {
             // Clear previous highlights
             clearGreenHighlights();
             
-            // Find and highlight the green window around target
-            const windowStart = targetIndex;
+            // Find the complete green window around target (start and end)
+            let windowStart = targetIndex;
             let windowEnd = targetIndex;
             
-            // Extend window to include adjacent green periods
+            // Find start of green window (go backwards)
+            while (windowStart > 0 && timeSeriesData[windowStart - 1]?.mode === 'green') {
+                windowStart--;
+            }
+            
+            // Find end of green window (go forwards)
             while (windowEnd < 95 && timeSeriesData[windowEnd + 1]?.mode === 'green') {
                 windowEnd++;
             }
             
-            // Add highlight class to green window bars
+            // Only highlight this one green window/period - not any others
             document.querySelectorAll('.timeline-bar').forEach((bar, index) => {
                 if (index >= windowStart && index <= windowEnd && timeSeriesData[index].mode === 'green') {
                     if (index === targetIndex) {
                         // Highlight the specific next green target with stronger emphasis
                         bar.classList.add('next-green-target');
                     } else {
-                        // Highlight the rest of the green window with standard emphasis
+                        // Highlight the rest of this green window with standard emphasis
                         bar.classList.add('shift-target');
                     }
                 }
