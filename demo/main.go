@@ -602,7 +602,7 @@ func main() {
             color: #1a1a1a;
             letter-spacing: -1px;
             margin-bottom: 8px;
-            font-family: 'Courier New', monospace;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
         }
         
         .unit {
@@ -870,6 +870,7 @@ func main() {
             font-weight: 100;
             letter-spacing: -2px;
             margin-bottom: 10px;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Elegant easing */
         }
         
@@ -2068,6 +2069,26 @@ if (data.optimization.eco_discount > 0) {
                     const carbonData = timeSeriesData[targetTimeIndex];
                     if (carbonData) {
                         updateShiftDisplay(carbonData, targetTimeIndex);
+                        
+                        // Also update main carbon display continuously
+                        document.getElementById('carbonValue').textContent = Math.round(carbonData.carbon_intensity);
+                        
+                        // Update status and other displays
+                        const statusText = document.getElementById('statusText');
+                        const statusLabel = document.getElementById('statusLabel');
+                        statusText.className = 'status-text ' + carbonData.mode;
+                        const statusMessages = {
+                            'green': 'Optimal Operation',
+                            'yellow': 'Normal Operation', 
+                            'red': 'Reduced Operation'
+                        };
+                        statusLabel.textContent = statusMessages[carbonData.mode] || 'Normal Operation';
+                        
+                        // Update info grid
+                        document.getElementById('renewableValue').textContent = Math.round(carbonData.renewable_percentage) + '%';
+                        document.getElementById('trendValue').textContent = carbonData.trend_direction.charAt(0).toUpperCase() + carbonData.trend_direction.slice(1);
+                        document.getElementById('percentileValue').textContent = Math.round(carbonData.local_percentile) + '%';
+                        
                         // Also update optimization cards and JSON for continuous updates
                         fetch('/api/v1/optimization/' + carbonData.hour)
                             .then(response => response.json())
